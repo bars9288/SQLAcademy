@@ -225,66 +225,104 @@ WHERE name LIKE '%10%'
 ```
 35 - Сколько различных кабинетов школы использовались 2 сентября 2019 года для проведения занятий?
 ```sql
-
+SELECT DISTINCT COUNT(classroom) AS count FROM Schedule
+WHERE date IN (SELECT date FROM Schedule
+WHERE date LIKE '%2019-09-02%')
 ```
 36 - Выведите информацию об обучающихся живущих на улице Пушкина (ul. Pushkina)?
 ```sql
 SELECT * FROM Student
 WHERE address LIKE '%Pushkina%'
 ```
-11 -
+37 - Сколько лет самому молодому обучающемуся ?
+```sql
+SELECT MIN(TIMESTAMPDIFF(YEAR, birthday, NOW())) AS year
+ FROM Student
+```
+38 - Сколько Анн (Anna) учится в школе ?
+```sql
+SELECT COUNT(*) AS count FROM Student
+WHERE first_name = 'Anna'
+```
+39 - Сколько обучающихся в 10 B классе ?
+```sql
+SELECT COUNT(*) AS count FROM Student_in_class
+INNER JOIN Class ON Class.id = Student_in_class.class
+WHERE Class.name = '10 B'
+```
+40 - Выведите название предметов, которые преподает Ромашкин П.П. (Romashkin P.P.). Обратите внимание, что в базе данных есть несколько учителей с такими фамилией и инициалами.
+```sql
+SELECT name AS subjects FROM Subject
+INNER JOIN Schedule ON Schedule.subject = Subject.id
+INNER JOIN Teacher ON Teacher.id = Schedule.teacher
+WHERE Teacher.last_name LIKE '%Romashkin%'
+AND Teacher.middle_name LIKE 'P%'
+```
+41 - Выясните, во сколько по расписанию начинается четвёртое занятие.
+```sql
+SELECT DISTINCT start_pair FROM  Timepair
+INNER JOIN Schedule ON Schedule.number_pair = Timepair.id
+WHERE number_pair = 4
+```
+42 - Сколько времени обучающийся будет находиться в школе, учась со 2-го по 4-ый уч. предмет?
+```sql
+SELECT DISTINCT TIMEDIFF(
+    (SELECT DISTINCT end_pair FROM Timepair
+    INNER JOIN Schedule ON Schedule.number_pair = Timepair.id
+    WHERE number_pair = 4),
+    (SELECT DISTINCT start_pair FROM Timepair
+    INNER JOIN Schedule ON Schedule.number_pair = Timepair.id
+    WHERE number_pair = 2)
+) AS time FROM Timepair
+```
+43 - Выведите фамилии преподавателей, которые ведут физическую культуру (Physical Culture). Отсортируйте преподавателей по фамилии в алфавитном порядке.
+```sql
+SELECT last_name FROM Teacher
+INNER JOIN Schedule ON Schedule.teacher = Teacher.id
+INNER JOIN Subject ON Subject.id = Schedule.subject
+WHERE Subject.name = 'Physical Culture'
+ORDER BY last_name ASC  
+```
+44 - Найдите максимальный возраст (количество лет) среди обучающихся 10 классов на сегодняшний день. Для получения текущих даты и времени используйте функцию NOW().
+```sql
+SELECT MAX(TIMESTAMPDIFF(YEAR, birthday, NOW())) AS max_year FROM Student
+INNER JOIN Student_in_class ON Student_in_class.student = Student.id
+INNER JOIN Class ON Class.id = Student_in_class.class
+WHERE Class.name LIKE '10%'
+```
+45 - Какие кабинеты чаще всего использовались для проведения занятий? Выведите те, которые использовались максимальное количество раз.
+```sql
+SELECT classroom FROM Schedule
+GROUP BY classroom
+HAVING COUNT(classroom) =
+    (SELECT COUNT(classroom) FROM Schedule
+    GROUP BY classroom
+    ORDER BY COUNT(classroom) DESC
+    LIMIT 1)
+```
+46 - В каких классах введет занятия преподаватель "Krauze" ?
+```sql
+SELECT DISTINCT  name FROM Class
+INNER JOIN Schedule ON Schedule.class = Class.id
+INNER JOIN Teacher ON Teacher.id = Schedule.teacher
+WHERE Teacher.last_name = 'Krauze'
+```
+47 - Сколько занятий провел Krauze 30 августа 2019 г.?
+```sql
+SELECT COUNT(*) AS count FROM Schedule
+INNER JOIN Teacher ON Teacher.id = Schedule.teacher
+WHERE Teacher.last_name = 'Krauze'
+AND Schedule.date LIKE '2019-08-30%'
+```
+48 -
 ```sql
 
 ```
-11 -
+49 -
 ```sql
 
 ```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
+50 -
 ```sql
 
 ```
