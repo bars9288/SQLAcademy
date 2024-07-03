@@ -202,29 +202,35 @@ SELECT trip, COUNT(passenger) AS count FROM Pass_in_trip
 GROUP BY trip
 ORDER BY count DESC
 ```
-11 -
+31 - Вывести всех членов семьи с фамилией Quincey.
+```sql
+SELECT * FROM FamilyMembers
+WHERE member_name LIKE '%Quincey%'
+```
+32 - Вывести средний возраст людей (в годах), хранящихся в базе данных. Результат округлите до целого в меньшую сторону.
+```sql
+SELECT FLOOR(AVG(TIMESTAMPDIFF(YEAR,birthday,NOW())))
+AS age FROM FamilyMembers
+```
+33 - Найдите среднюю цену икры на основе данных, хранящихся в таблице Payments. В базе данных хранятся данные о покупках красной (red caviar) и черной икры (black caviar). В ответе должна быть одна строка со средней ценой всей купленной когда-либо икры.
+```sql
+SELECT AVG(unit_price) AS cost FROM Payments
+INNER JOIN Goods ON Goods.good_id = Payments.good
+WHERE good_name IN ('red caviar','black caviar')
+```
+34 - Сколько всего 10-ых классов
+```sql
+SELECT COUNT(name) AS count FROM Class
+WHERE name LIKE '%10%'
+```
+35 - Сколько различных кабинетов школы использовались 2 сентября 2019 года для проведения занятий?
 ```sql
 
 ```
-11 -
+36 - Выведите информацию об обучающихся живущих на улице Пушкина (ul. Pushkina)?
 ```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
-```
-11 -
-```sql
-
+SELECT * FROM Student
+WHERE address LIKE '%Pushkina%'
 ```
 11 -
 ```sql
