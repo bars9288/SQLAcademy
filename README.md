@@ -385,16 +385,17 @@ WHERE town_from = 'Moscow'
 57 - Перенести расписание всех занятий на 30 мин. вперед.
 ```sql
 UPDATE Timepair
-SET start_pair = TIMESTAMPADD(MINUTE, 30, start_pair ),
+SET start_pair = TIMESTAMPADD(MINUTE, 30, start_pair),
       end_pair = TIMESTAMPADD(MINUTE, 30 , end_pair);
 ```
 58 - Добавить отзыв с рейтингом 5 на жилье, находящиеся по адресу "11218, Friel Place, New York", от имени "George Clooney"
 ```sql
 
 ```
-59 - Вывести пользователей,указавших Белорусский номер телефона ? Телефонный код Белоруссии +375.
+59 - Вывести пользователей,у казавших Белорусский номер телефона ? Телефонный код Белоруссии +375.
 ```sql
-
+SELECT * FROM Users
+WHERE phone_number LIKE '+375%'
 ```
 60 - Выведите идентификаторы преподавателей, которые хотя бы один раз за всё время преподавали в каждом из одиннадцатых классов.
 ```sql
@@ -408,8 +409,10 @@ SET start_pair = TIMESTAMPADD(MINUTE, 30, start_pair ),
 ```sql
 
 ```
-63 -
+63 - Выведите отсортированный список (по возрастанию) фамилий и имен студентов в виде Фамилия.И.
 ```sql
+SELECT CONCAT(last_name,'.',SUBSTRING(first_name,1,1),'.') AS name FROM Student
+ORDER BY last_name, first_name ASC
 
 ```
 64 -
@@ -452,13 +455,18 @@ SET start_pair = TIMESTAMPADD(MINUTE, 30, start_pair ),
 ```sql
 
 ```
-74 -
+74 - Выведите идентификатор и признак наличия интернета в помещении. Если интернет в сдаваемом жилье присутствует, то выведите «YES», иначе «NO».
 ```sql
-
+SELECT id, 
+CASE has_internet
+WHEN 1 THEN 'YES'
+WHEN 0 THEN 'NO'
+END AS has_internet FROM  Rooms 
 ```
-75 -
+75 - Выведите фамилию, имя и дату рождения студентов, кто был рожден в мае.
 ```sql
-
+SELECT last_name, first_name, birthday FROM Student
+WHERE MONTH(birthday) = 05
 ```
 76 -
 ```sql
