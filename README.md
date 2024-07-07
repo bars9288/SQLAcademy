@@ -340,6 +340,372 @@ WHERE YEAR(birthday) = '2000') * 100 /
 ```
 51 - Добавьте товар с именем "Cheese" и типом "food" в список товаров (Goods).
 ```sql
+INSERT INTO Goods
+SELECT COUNT(*) + 1, 'Cheese',
+(SELECT good_type_id FROM GoodTypes
+WHERE good_type_name = 'food') FROM Goods;
+```
+52 - Добавьте в список типов товаров (GoodTypes) новый тип "auto".
+```sql
+INSERT INTO GoodTypes
+SELECT COUNT(*) + 1,
+'auto' FROM GoodTypes;
+```
+53 - Измените имя "Andie Quincey" на новое "Andie Anthony".
+```sql
+UPDATE FamilyMembers
+SET member_name = 'Andie Anthony'
+WHERE member_name = 'Andie Quincey';
+```
+54 - Удалить всех членов семьи с фамилией "Quincey".
+```sql
+DELETE FROM FamilyMembers
+WHERE member_name LIKE '%Quincey%';
+```
+55 - Удалить компании, совершившие наименьшее количество рейсов.
+```sql
+WITH Temp AS
+(SELECT company AS id FROM Company
+INNER JOIN Trip ON Trip.company = Company.id
+GROUP BY company
+HAVING COUNT(*) =
+    (SELECT COUNT(*) AS count FROM Company
+    INNER JOIN Trip ON Trip.company = Company.id
+    GROUP BY company
+    ORDER BY count ASC
+    LIMIT 1))
+DELETE FROM Company
+WHERE id IN (SELECT id FROM Temp);
+```
+56 - Удалить все перелеты, совершенные из Москвы (Moscow).
+```sql
+DELETE FROM Trip
+WHERE town_from = 'Moscow'
+```
+57 - Перенести расписание всех занятий на 30 мин. вперед.
+```sql
+UPDATE Timepair
+SET start_pair = TIMESTAMPADD(MINUTE, 30, start_pair ),
+      end_pair = TIMESTAMPADD(MINUTE, 30 , end_pair);
+```
+58 - Добавить отзыв с рейтингом 5 на жилье, находящиеся по адресу "11218, Friel Place, New York", от имени "George Clooney"
+```sql
+
+```
+59 - Вывести пользователей,указавших Белорусский номер телефона ? Телефонный код Белоруссии +375.
+```sql
+
+```
+60 - Выведите идентификаторы преподавателей, которые хотя бы один раз за всё время преподавали в каждом из одиннадцатых классов.
+```sql
+
+```
+61 - Выведите список комнат, которые были зарезервированы хотя бы на одни сутки в 12-ую неделю 2020 года. В данной задаче в качестве одной недели примите период из семи дней, первый из которых начинается 1 января 2020 года. Например, первая неделя года — 1–7 января, а третья — 15–21 января.
+```sql
+
+```
+62 -
+```sql
+
+```
+63 -
+```sql
+
+```
+64 -
+```sql
+
+```
+65 -
+```sql
+
+```
+66 -
+```sql
+
+```
+67 -
+```sql
+
+```
+68 -
+```sql
+
+```
+69 -
+```sql
+
+```
+70 -
+```sql
+
+```
+71 -
+```sql
+
+```
+72 -
+```sql
+
+```
+73 -
+```sql
+
+```
+74 -
+```sql
+
+```
+75 -
+```sql
+
+```
+76 -
+```sql
+
+```
+77 -
+```sql
+
+```
+78 -
+```sql
+
+```
+79 -
+```sql
+
+```
+80 -
+```sql
+
+```
+81 -
+```sql
+
+```
+82 -
+```sql
+
+```
+83 -
+```sql
+
+```
+84 -
+```sql
+
+```
+85 -
+```sql
+
+```
+86 -
+```sql
+
+```
+87 -
+```sql
+
+```
+88 -
+```sql
+
+```
+89 -
+```sql
+
+```
+90 -
+```sql
+
+```
+91 -
+```sql
+
+```
+92 -
+```sql
+
+```
+93 -
+```sql
+
+```
+94 -
+```sql
+
+```
+95 -
+```sql
+
+```
+96 -
+```sql
+
+```
+97 -
+```sql
+
+```
+98 -
+```sql
+
+```
+99 -
+```sql
+
+```
+100 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
+
+```
+52 -
+```sql
 
 ```
 
