@@ -390,7 +390,14 @@ SET start_pair = TIMESTAMPADD(MINUTE, 30, start_pair),
 ```
 58 - Добавить отзыв с рейтингом 5 на жилье, находящиеся по адресу "11218, Friel Place, New York", от имени "George Clooney"
 ```sql
-
+INSERT INTO Reviews(id, reservation_id, rating)
+SELECT (COUNT(*) +1),
+(SELECT Reservations.id FROM Reservations
+INNER JOIN Users ON Users.id = Reservations.user_id
+INNER JOIN Rooms ON Rooms.id = Reservations.room_id
+WHERE Users.name = 'George Clooney' 
+AND Rooms.address = '11218, Friel Place, New York'),5
+FROM Reviews;
 ```
 59 - Вывести пользователей,у казавших Белорусский номер телефона ? Телефонный код Белоруссии +375.
 ```sql
@@ -405,9 +412,13 @@ WHERE phone_number LIKE '+375%'
 ```sql
 
 ```
-62 -
+62 - Вывести в порядке убывания популярности доменные имена 2-го уровня, используемые пользователями для электронной почты. Полученный результат необходимо дополнительно отсортировать по возрастанию названий доменных имён.
 ```sql
-
+SELECT 
+SUBSTRING(email, INSTR(email, '@') + 1) AS domain,
+COUNT(*) AS count FROM Users
+GROUP BY domain
+ORDER BY count DESC, domain ASC; 
 ```
 63 - Выведите отсортированный список (по возрастанию) фамилий и имен студентов в виде Фамилия.И.
 ```sql
@@ -447,13 +458,17 @@ ORDER BY last_name, first_name ASC
 ```sql
 
 ```
-72 -
+72 - Выведите среднюю цену бронирования за сутки для каждой из комнат, которую бронировали хотя бы один раз. Среднюю цену необходимо округлить до целого значения вверх.
 ```sql
-
+SELECT room_id, CEILING(AVG(price)) AS avg_price FROM Reservations
+GROUP BY room_id
+HAVING COUNT(id) >= 1;
 ```
-73 -
+73 - Выведите id тех комнат, которые арендовали нечетное количество раз
 ```sql
-
+SELECT room_id, COUNT(*) AS count FROM Reservations
+GROUP BY room_id
+HAVING (COUNT(id) % 2) = 1;
 ```
 74 - Выведите идентификатор и признак наличия интернета в помещении. Если интернет в сдаваемом жилье присутствует, то выведите «YES», иначе «NO».
 ```sql
@@ -461,7 +476,7 @@ SELECT id,
 CASE has_internet
 WHEN 1 THEN 'YES'
 WHEN 0 THEN 'NO'
-END AS has_internet FROM  Rooms 
+END AS has_internet FROM  Rooms;
 ```
 75 - Выведите фамилию, имя и дату рождения студентов, кто был рожден в мае.
 ```sql
